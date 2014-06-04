@@ -10,4 +10,9 @@ angular.module('firePollsApp.controllers', [])
                 return Questions.create({question: $scope.question});
             }
         };
+
+        $scope.onDelete = function (e, id) {
+            e.stopPropagation();
+            $scope.questions.$remove(id);
+        };
     }]);
