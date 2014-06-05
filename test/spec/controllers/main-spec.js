@@ -4,21 +4,28 @@ describe('Controller: MainCtrl', function () {
 
     // load the controller's module
     beforeEach(module('firePollsApp.controllers', {
-        Questions: jasmine.createSpyObj('Questions', ['sync', 'create'])
+        Category: jasmine.createSpyObj('Category', ['sync']),
+        Question: jasmine.createSpyObj('Question', ['sync', 'create'])
     }));
 
     var MainCtrl,
         scope,
-        Questions,
-        $bindSpy;
+        Question,
+        Category,
+        categoryBindSpy,
+        questionBindSpy;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope, _Questions_) {
+    beforeEach(inject(function ($controller, $rootScope, _Question_, _Category_) {
         scope = $rootScope.$new();
-        scope.questions = jasmine.createSpyObj('$scope.questions', ['$add', '$remove'])
-        $bindSpy = jasmine.createSpy('$bindSpy');
-        Questions = _Questions_;
-        Questions.sync.andReturn({$bind: $bindSpy});
+        scope.categories = jasmine.createSpyObj('scope.categories', ['$add', '$remove']);
+        scope.questions = jasmine.createSpyObj('scope.questions', ['$add', '$remove']);
+        categoryBindSpy = jasmine.createSpy('categoryBindSpy');
+        questionBindSpy = jasmine.createSpy('questionBindSpy');
+        Category = _Category_;
+        Category.sync.andReturn({$bind: categoryBindSpy});
+        Question = _Question_;
+        Question.sync.andReturn({$bind: questionBindSpy});
         MainCtrl = $controller('MainCtrl', {
             $scope: scope
         });
@@ -27,12 +34,20 @@ describe('Controller: MainCtrl', function () {
 
     describe("Initialization", function () {
 
-        it("Should call Questions.sync", function () {
-            expect(Questions.sync).toHaveBeenCalledWith();
+        it("Should call Category.sync", function () {
+            expect(Category.sync).toHaveBeenCalledWith();
+        });
+        
+        it("Should call Question.sync", function () {
+            expect(Question.sync).toHaveBeenCalledWith();
+        });
+
+        it("Should call the $bind on sync with $scope and categories", function () {
+            expect(categoryBindSpy).toHaveBeenCalledWith(scope, 'categories');
         });
 
         it("Should call the $bind on sync with $scope and questions", function () {
-            expect($bindSpy).toHaveBeenCalledWith(scope, 'questions');
+            expect(questionBindSpy).toHaveBeenCalledWith(scope, 'questions');
         });
 
         it("Should throw questionTypes on the $scope", function () {

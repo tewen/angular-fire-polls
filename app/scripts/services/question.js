@@ -1,4 +1,4 @@
-angular.module('firePollsApp.services').factory('Questions',
+angular.module('firePollsApp.services').factory('Question',
     ['firebaseRef', 'syncData',
         function (firebaseRef, syncData) {
             var _url = '/questions', _ref = firebaseRef(_url);

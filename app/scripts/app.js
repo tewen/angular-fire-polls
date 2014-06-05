@@ -10,6 +10,7 @@ angular.module('firePollsApp', [
     'angularfire.login',
     'simpleLoginTools',
     'ui.bootstrap.typeahead',
+    'ui.bootstrap.tpls',
     'firePollsApp.controllers',
     'firePollsApp.services'
 ])
