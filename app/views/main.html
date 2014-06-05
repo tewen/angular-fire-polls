@@ -22,7 +22,8 @@
                     </table>
                 </td>
                 <td>
-                    <a class="btn btn-danger" ng-click="onDelete($event, id)">X</a>
+                    <a class="btn btn-danger"
+                       ng-click="onDelete($event, id)">X</a>
                 </td>
             </tr>
             </tbody>
@@ -38,6 +39,28 @@
                        id="question"
                        placeholder="Enter Question"
                        ng-model="question"/>
+            </div>
+            <div class="form-group">
+                <label>Answer</label>
+
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle"
+                            type="button"
+                            id="dropdownMenu1"
+                            data-toggle="dropdown"
+                            ng-bind="selections.selectedQuestionType">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu"
+                        role="menu"
+                        aria-labelledby="dropdownMenu1">
+                        <li role="presentation"
+                            ng-repeat="qt in questionTypes"
+                            ng-click="selections.selectedQuestionType = qt"><a role="menuitem"
+                                                                               tabindex="-1"
+                                                                               ng-bind="qt"></a></li>
+                    </ul>
+                </div>
             </div>
             <button type="submit"
                     class="btn btn-default">Submit
