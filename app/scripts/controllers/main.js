@@ -5,13 +5,18 @@ angular.module('firePollsApp.controllers', [])
         /* Initialization */
         Questions.sync().$bind($scope, 'questions');
         $scope.questionTypes = ['True/False', 'Multiple Choice'];
-        $scope.selections = {selectedQuestionType: $scope.questionTypes[0]};
-
+        $scope.selections = {selectedQuestionType: $scope.questionTypes[0], multipleChoiceOptions: [{value: ''}, {value: ''}]};
 
         /* Action Handlers */
-        $scope.onSubmit = function (e) {
+        $scope.onSubmit = function () {
             if ($scope.question) {
-                return Questions.create({question: $scope.question});
+                var options;
+                if ($scope.selections.selectedQuestionType === 'True/False') {
+                    options = [{value: true}, {value: false}];
+                } else {
+                    options = $scope.multipleChoiceOptions;
+                }
+                return Questions.create({question: $scope.question, options: options});
             }
         };
 

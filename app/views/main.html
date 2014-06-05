@@ -43,23 +43,38 @@
             <div class="form-group">
                 <label>Answer</label>
 
-                <div class="dropdown">
-                    <button class="btn dropdown-toggle"
-                            type="button"
-                            id="dropdownMenu1"
-                            data-toggle="dropdown"
-                            ng-bind="selections.selectedQuestionType">
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu"
-                        role="menu"
-                        aria-labelledby="dropdownMenu1">
-                        <li role="presentation"
-                            ng-repeat="qt in questionTypes"
-                            ng-click="selections.selectedQuestionType = qt"><a role="menuitem"
-                                                                               tabindex="-1"
-                                                                               ng-bind="qt"></a></li>
-                    </ul>
+                <!-- Answer Type -->
+                <div class="form-group">
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle full"
+                                type="button"
+                                id="dropdownMenu1"
+                                data-toggle="dropdown"
+                                ng-bind="selections.selectedQuestionType">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu"
+                            role="menu"
+                            aria-labelledby="dropdownMenu1">
+                            <li role="presentation"
+                                ng-repeat="qt in questionTypes"
+                                ng-click="selections.selectedQuestionType = qt"><a role="menuitem"
+                                                                                   tabindex="-1"
+                                                                                   ng-bind="qt"></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div ng-show="selections.selectedQuestionType == 'Multiple Choice'">
+                    <div class="form-group"
+                         ng-repeat="mco in selections.multipleChoiceOptions">
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Enter Option {{$index + 1}}"
+                               ng-model="mco.value"/>
+                    </div>
+                    <a class="btn btn-primary full"
+                       ng-click="selections.multipleChoiceOptions.push({value: ''})">Add</a>
                 </div>
             </div>
             <button type="submit"
