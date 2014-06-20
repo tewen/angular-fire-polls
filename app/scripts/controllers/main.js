@@ -44,10 +44,8 @@ angular.module('firePollsApp.controllers')
                     .reject(function (val, key) {
                         return typeof val == 'function';
                     }).map(function (val, key) {
-                        if (typeof val == 'object') {
-                            val.id = key;
-                        } else {
-                            val = {id: key, name: val};
+                        if (typeof val !== 'object') {
+                            val = {name: val};
                         }
                         return val
                     }).valueOf();
