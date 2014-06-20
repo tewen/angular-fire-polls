@@ -25,7 +25,9 @@ angular.module('firePollsApp.controllers')
                 } else {
                     options = $scope.selections.multipleChoiceOptions;
                 }
-                if ($scope.category && !$scope.getCategories()['name'] === $scope.category) {
+                if ($scope.category && _.map($scope.getCategories(), function (cat) {
+                    return cat.name.toLowerCase();
+                }).indexOf($scope.category.toLowerCase()) === -1) {
                     Category.create({name: $scope.category});
                 }
                 return $scope.questions.$add({question: $scope.question, options: options});
