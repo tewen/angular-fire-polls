@@ -1,5 +1,27 @@
 <div class="row">
     <div class="col-xs-12 col-md-8">
+        <div class="form-group">
+            <div class="dropdown">
+                <button class="btn-success dropdown-toggle full"
+                        type="button"
+                        data-toggle="dropdown"
+                        ng-bind="selections.selectedCategoryFilter.name || 'No filter'">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu"
+                    role="menu"
+                    aria-labelledby="dropdownMenu1">
+                    <li role="presentation"
+                        ng-click="selections.selectedCategoryFilter = null"><a role="menuitem"
+                                                                              tabindex="-1">None</a></li>
+                    <li role="presentation"
+                        ng-repeat="cat in getCategories()"
+                        ng-click="selections.selectedCategoryFilter = cat"><a role="menuitem"
+                                                                              tabindex="-1"
+                                                                              ng-bind="cat.name"></a></li>
+                </ul>
+            </div>
+        </div>
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
@@ -11,11 +33,14 @@
             </thead>
             <tbody>
             <tr ng-repeat="(id, q) in questions"
-                ng-click="q.active = !q.active">
+                ng-click="q.active = !q.active"
+                ng-show="!selections.selectedCategoryFilter || q.category == selections.selectedCategoryFilter.name">
                 <td>
                     <div ng-bind="q.question"></div>
-                    <ol type="a" ng-if="q.active">
-                        <li ng-repeat="option in q.options" ng-bind="option.value"></li>
+                    <ol type="a"
+                        ng-if="q.active">
+                        <li ng-repeat="option in q.options"
+                            ng-bind="option.value"></li>
                     </ol>
                 </td>
                 <td>

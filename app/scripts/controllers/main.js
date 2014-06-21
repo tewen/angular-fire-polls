@@ -8,10 +8,13 @@ angular.module('firePollsApp.controllers')
 
         /* Initialization */
         $scope.questionTypes = ['True/False', 'Multiple Choice'];
-        $scope.selections = {selectedQuestionType: $scope.questionTypes[0], multipleChoiceOptions: [
-            {value: ''},
-            {value: ''}
-        ]};
+        $scope.selections = {
+            selectedCategoryFilter: null,
+            selectedQuestionType: $scope.questionTypes[0], multipleChoiceOptions: [
+                {value: ''},
+                {value: ''}
+            ]
+        };
 
         /* Action Handlers */
         $scope.onSubmit = function () {
@@ -30,7 +33,7 @@ angular.module('firePollsApp.controllers')
                 }).indexOf($scope.category.toLowerCase()) === -1) {
                     Category.create({name: $scope.category});
                 }
-                return $scope.questions.$add({question: $scope.question, options: options});
+                return $scope.questions.$add({question: $scope.question, options: options, category: $scope.category});
             }
         };
 
