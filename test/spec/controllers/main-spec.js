@@ -54,6 +54,10 @@ describe('Controller: MainCtrl', function () {
             expect(scope.questionTypes).toEqual(['True/False', 'Multiple Choice']);
         });
 
+        it("Should set the scope.selections.selectedCategoryFilter to null", function () {
+            expect(scope.selections.selectedCategoryFilter).toBeNull();
+        });
+
         it("Should set scope.selectedQuestionType to the first of the question types", function () {
             expect(scope.selections.selectedQuestionType).toEqual(scope.questionTypes[0]);
         });
@@ -111,6 +115,34 @@ describe('Controller: MainCtrl', function () {
                 scope.onDelete(event, '25OR624');
                 expect(scope.questions.$remove).toHaveBeenCalledWith('25OR624');
             });
+        });
+    });
+
+    describe("Getters", function () {
+        describe("getCategories", function () {
+
+            it("Should return an empty array if there are no categories on the scope", function () {
+                scope.categories = null;
+                expect(scope.getCategories()).toEqual([]);
+            });
+
+            it("Should reject any functions defined within the categories on the scope", function () {
+                scope.categories = [function () {}, {id: 89, name: 'Tacos'}];
+                expect(scope.getCategories()).toEqual([{id: 89, name: 'Tacos'}]);
+            });
+
+            it("Should make primitives into objects where the val is the name key", function () {
+                scope.categories = ["Cheddar", {id: 89, name: 'Tacos'}];
+                expect(scope.getCategories()).toEqual([{name: "Cheddar"}, {id: 89, name: 'Tacos'}]);
+            });
+
+            it("Should do nothing to category of object type in the list", function () {
+                scope.categories = [{id: 90}, {id: 89, name: 'Tacos'}];
+                
+                var copy = angular.copy(scope.categories);
+                expect(scope.getCategories()).toEqual(copy);
+            });
+
         });
     });
 });
