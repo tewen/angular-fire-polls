@@ -16,7 +16,8 @@
     "firebase-simple-login": "~1.0.2",
     "angular-ui-router": "~0.2.10",
     "angular-bootstrap": "~0.11.0",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "neosavvy-javascript-core": "~0.1.1"
   },
   "devDependencies": {
     "angular-mocks": "1.2.6",

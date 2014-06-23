@@ -138,7 +138,7 @@ describe('Controller: MainCtrl', function () {
 
             it("Should do nothing to category of object type in the list", function () {
                 scope.categories = [{id: 90}, {id: 89, name: 'Tacos'}];
-                
+
                 var copy = angular.copy(scope.categories);
                 expect(scope.getCategories()).toEqual(copy);
             });
