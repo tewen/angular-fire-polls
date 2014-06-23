@@ -2,7 +2,6 @@
 
 angular.module('firePollsApp.controllers', []);
 angular.module('firePollsApp.services', ['firebase', 'angularfire.firebase']);
-angular.module('firePollsApp.constraints', []);
 angular.module('firePollsApp.filters', []);
 angular.module('firePollsApp', [
     'ngCookies',
@@ -15,7 +14,6 @@ angular.module('firePollsApp', [
     'ui.bootstrap.tpls',
     'firePollsApp.controllers',
     'firePollsApp.services',
-    'firePollsApp.constraints',
     'firePollsApp.filters'
 ])
     .config(function ($routeProvider) {

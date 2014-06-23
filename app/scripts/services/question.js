@@ -7,9 +7,7 @@ angular.module('firePollsApp.services').factory('Question',
                     return _ref.push(question);
                 },
                 remove: function (id) {
-                    return _ref.child(id).remove(function (error) {
-                        console.log(error)
-                    });
+                    return _ref.child(id).remove();
                 },
                 sync: function () {
                     return syncData(_url);

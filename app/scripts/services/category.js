@@ -1,6 +1,6 @@
 angular.module('firePollsApp.services').factory('Category',
-    ['firebaseRef', 'syncData', 'unique',
-        function (firebaseRef, syncData, unique) {
+    ['firebaseRef', 'syncData',
+        function (firebaseRef, syncData) {
             var _url = '/categories', _ref = firebaseRef(_url);
             return {
                 create: function (category) {
