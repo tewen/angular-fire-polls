@@ -1,5 +1,6 @@
-angular.module('firePollsApp.constraints').value('uniqueToCollection',
-    function (value, collection, propertyForComparison, caseSensitive) {
+(function (angular) {
+
+    var uniqueToCollection = function (value, collection, propertyForComparison, caseSensitive) {
         if (caseSensitive === undefined) {
             caseSensitive = false;
         }
@@ -10,17 +11,26 @@ angular.module('firePollsApp.constraints').value('uniqueToCollection',
                     value = caseSensitive ? String(value) : String(value).toLowerCase();
                 }
                 if (propertyForComparison) {
-                    collection = _.map(collection, function (item) {
-                        var val = _hpGet(item, propertyForComparison);
+                    for (var i = 0; i < collection.length; i++) {
+                        var val = _hpGet(collection[i], propertyForComparison);
                         if (val && !caseSensitive) {
                             val = val.toLowerCase();
                         }
-                        return val;
-                    });
+                        if (val === value) {
+                            return false
+                        }
+                    }
+                } else {
+                    return JSON.stringify(collection).indexOf(JSON.stringify(value)) === -1;
                 }
-                return collection.indexOf(value) === -1;
+            } else {
+                return false;
             }
-            return false;
         }
         return true;
-    });
+    };
+
+    angular.module('firePollsApp.constraints').value('uniqueToCollection', uniqueToCollection);
+    angular.module('firePollsApp.constraints').value('uniqueToCollectionCached', memoize(uniqueToCollection));
+})(angular);
+

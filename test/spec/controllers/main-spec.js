@@ -3,7 +3,7 @@
 describe('Controller: MainCtrl', function () {
 
     // load the controller's module
-    beforeEach(module('firePollsApp.controllers', {
+    beforeEach(module('firePollsApp.controllers', 'firePollsApp.constraints', {
         Category: jasmine.createSpyObj('Category', ['sync']),
         Question: jasmine.createSpyObj('Question', ['sync', 'create'])
     }));
