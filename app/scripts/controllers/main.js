@@ -11,7 +11,7 @@ angular.module('firePollsApp.controllers')
             $scope.questionTypes = ['True/False', 'Multiple Choice'];
             $scope.selections = {
                 selectedCategoryFilter: null,
-                selectedQuestionType: $scope.questionTypes[0], multipleChoiceOptions: [
+                selectedQuestionType: $scope.questionTypes[1], multipleChoiceOptions: [
                     {value: ''},
                     {value: ''}
                 ]
@@ -19,7 +19,7 @@ angular.module('firePollsApp.controllers')
 
             /* Action Handlers */
             $scope.onSubmit = function () {
-                if ($scope.question) {
+                if ($scope.question && $scope.answer !== undefined) {
                     var options = ($scope.selections.selectedQuestionType === 'True/False' ? [
                         {value: true},
                         {value: false}
@@ -28,7 +28,7 @@ angular.module('firePollsApp.controllers')
                     if ($scope.category && uniqueToCollection($scope.category, $scope.getCategories(), 'name')) {
                         Category.create({name: $scope.category});
                     }
-                    return $scope.questions.$add({question: $scope.question, options: options, category: $scope.category});
+                    return $scope.questions.$add({question: $scope.question, answer: $scope.answer, options: options, category: $scope.category});
                 }
             };
 
