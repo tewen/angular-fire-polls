@@ -4,7 +4,7 @@ describe('Controller: MainCtrl', function () {
 
     // load the controller's module
     beforeEach(module('firePollsApp.controllers', 'firePollsApp.constraints', {
-        Category: jasmine.createSpyObj('Category', ['sync']),
+        Category: jasmine.createSpyObj('Category', ['sync', 'create']),
         Question: jasmine.createSpyObj('Question', ['sync', 'create'])
     }));
 
@@ -72,6 +72,10 @@ describe('Controller: MainCtrl', function () {
 
     describe("Action Handlers", function () {
         describe("onSubmit", function () {
+            beforeEach(function () {
+                scope.question = 'What is your favorite cheese?';
+            });
+
             it("Should not call scope.questions.$add if there is no question defined on the scope", function () {
                 scope.question = '';
                 scope.onSubmit();
@@ -79,7 +83,6 @@ describe('Controller: MainCtrl', function () {
             });
 
             it("Should call scope.questions.$add if there is no question defined on the scope", function () {
-                scope.question = 'What is your favorite color?';
                 scope.onSubmit();
                 expect(scope.questions.$add).toHaveBeenCalledWith({question: scope.question, options: [
                     {value: true},
@@ -88,7 +91,6 @@ describe('Controller: MainCtrl', function () {
             });
 
             it("Should call scope.questions.$add with multipleChoiceOptions if there is no question defined on the scope", function () {
-                scope.question = 'What is your favorite color?';
                 scope.selections.selectedQuestionType = 'Multiple Choice';
                 scope.onSubmit();
                 expect(scope.questions.$add).toHaveBeenCalledWith({question: scope.question, options: [
@@ -97,6 +99,43 @@ describe('Controller: MainCtrl', function () {
                 ]
                 });
             });
+
+            describe("category", function () {
+                beforeEach(function () {
+                    scope.category = 'Philly Cheese';
+                    scope.getCategories = jasmine.createSpy('scope.getCategories').andReturn([{name: 'Cheese'}, {name: 'Toast'}]);
+                });
+
+                it("Should not call Category.create with the scope.category as the name if the $scope.question, category, and uniqueForCollection returns false", function () {
+                    scope.category = 'Cheese';
+                    scope.onSubmit();
+                    expect(Category.create).not.toHaveBeenCalled();
+                });
+
+                it("Should not call Category.create when there is non category", function () {
+                    scope.category = null;
+                    scope.onSubmit();
+                    expect(Category.create).not.toHaveBeenCalled();
+                });
+
+                it("Should call Category.create with the scope.category as the name if the $scope.question, category, and uniqueForCollection returns true", function () {
+                    scope.onSubmit();
+                    expect(Category.create).toHaveBeenCalledWith({name: scope.category});
+                });
+
+                it("Should call scope.questions.$add with the category as the last argument", function () {
+                    scope.onSubmit();
+                    expect(scope.questions.$add).toHaveBeenCalledWith({
+                        question: scope.question,
+                        options: [
+                            {value: true},
+                            {value: false}
+                        ],
+                        category: scope.category
+                    });
+                });
+            });
+
         });
 
         describe("onDelete", function () {

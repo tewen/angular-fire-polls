@@ -11,6 +11,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'test/lib/env.js',
       'app/bower_components/lodash/dist/lodash.js',
       'app/bower_components/neosavvy-javascript-core/neosavvy-javascript-core.js',
       'app/bower_components/angular/angular.js',
