@@ -75,6 +75,7 @@ describe('Controller: MainCtrl', function () {
             beforeEach(function () {
                 scope.question = 'What is your favorite cheese?';
                 scope.answer = 'true';
+                scope.category = 'Burger';
             });
 
             it("Should not call scope.questions.$add if there is no question defined on the scope", function () {
@@ -97,7 +98,8 @@ describe('Controller: MainCtrl', function () {
                 expect(scope.questions.$add).toHaveBeenCalledWith({
                     question: scope.question,
                     options: scope.selections.multipleChoiceOptions,
-                    answer: scope.selections.multipleChoiceOptions[scope.answer]
+                    answer: scope.selections.multipleChoiceOptions[scope.answer],
+                    category: scope.category
                 });
             });
 
@@ -107,21 +109,14 @@ describe('Controller: MainCtrl', function () {
                     question: scope.question, options: [
                         {value: true},
                         {value: false}
-                    ], answer: 'true'});
-            });
-
-            it("Should call scope.questions.$add with multipleChoiceOptions if there is no question defined on the scope", function () {
-                scope.selections.selectedQuestionType = 'Multiple Choice';
-                scope.onSubmit();
-                expect(scope.questions.$add).toHaveBeenCalledWith({question: scope.question, options: [
-                    {value: ''},
-                    {value: ''}
-                ]
-                });
+                    ], answer: 'true', category: scope.category});
             });
 
             describe("category", function () {
                 beforeEach(function () {
+                    /* Reset spy which is called above */
+                    Category.create.reset();
+                    
                     scope.category = 'Philly Cheese';
                     scope.getCategories = jasmine.createSpy('scope.getCategories').andReturn([
                         {name: 'Cheese'},

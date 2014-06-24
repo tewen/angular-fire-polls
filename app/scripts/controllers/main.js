@@ -19,28 +19,33 @@ angular.module('firePollsApp.controllers')
 
             /* Action Handlers */
             $scope.onSubmit = function () {
-                if ($scope.question) {
-                    if ($scope.answer !== undefined) {
-                        var options = ($scope.selections.selectedQuestionType === 'True/False' ? [
-                            {value: true},
-                            {value: false}
-                        ] : $scope.selections.multipleChoiceOptions);
+                if ($scope.category) {
+                    if ($scope.question) {
+                        if ($scope.answer !== undefined) {
+                            $scope.error = '';
+                            var options = ($scope.selections.selectedQuestionType === 'True/False' ? [
+                                {value: true},
+                                {value: false}
+                            ] : $scope.selections.multipleChoiceOptions);
 
-                        if ($scope.category && uniqueToCollection($scope.category, $scope.getCategories(), 'name')) {
-                            Category.create({name: $scope.category});
+                            if (uniqueToCollection($scope.category, $scope.getCategories(), 'name')) {
+                                Category.create({name: $scope.category});
+                            }
+
+                            return $scope.questions.$add({
+                                question: $scope.question,
+                                answer: $scope.selections.selectedQuestionType === 'True/False' ? $scope.answer : options[$scope.answer],
+                                options: options,
+                                category: $scope.category
+                            });
+                        } else {
+                            $scope.error = 'Please choose an answer for the question.';
                         }
-
-                        return $scope.questions.$add({
-                            question: $scope.question,
-                            answer: $scope.selections.selectedQuestionType === 'True/False' ? $scope.answer : options[$scope.answer],
-                            options: options,
-                            category: $scope.category
-                        });
                     } else {
-                        $scope.error = 'Please choose an answer for the question.';
+                        $scope.error = 'Please enter a question.';
                     }
-                } else {
-                    $scope.error = 'Please enter a question.';
+                } else  {
+                    $scope.error = 'Please enter or select a category.';
                 }
             };
 
