@@ -101,11 +101,11 @@
                      class="row">
                     <div class="col-xs-12">
                         <a class="btn btn-default col-xs-6"
-                           ng-click="selections.answer = 'True'"
-                           ng-class="selections.answer == 'True' ? 'btn-danger' : ''">True</a>
+                           ng-click="answer = 'true'"
+                           ng-class="answer == 'true' ? 'btn-danger' : ''">True</a>
                         <a class="btn btn-default col-xs-6"
-                           ng-click="selections.answer = 'False'"
-                           ng-class="selections.answer == 'False' ? 'btn-danger' : ''">False</a>
+                           ng-click="answer = 'false'"
+                           ng-class="answer == 'false' ? 'btn-danger' : ''">False</a>
                     </div>
                 </div>
 
@@ -123,8 +123,8 @@
                                 </div>
                             </div>
                             <a class="btn btn-default col-xs-3"
-                               ng-click="selections.answer = $index"
-                               ng-class="selections.answer == $index ? 'btn-danger' : ''">A</a>
+                               ng-click="answer = $index"
+                               ng-class="answer == $index ? 'btn-danger' : ''">A</a>
                         </div>
                     </div>
                     <div class="col-xs-12">

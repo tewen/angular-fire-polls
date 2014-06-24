@@ -37,7 +37,7 @@ describe('Controller: MainCtrl', function () {
         it("Should call Category.sync", function () {
             expect(Category.sync).toHaveBeenCalledWith();
         });
-        
+
         it("Should call Question.sync", function () {
             expect(Question.sync).toHaveBeenCalledWith();
         });
@@ -74,6 +74,7 @@ describe('Controller: MainCtrl', function () {
         describe("onSubmit", function () {
             beforeEach(function () {
                 scope.question = 'What is your favorite cheese?';
+                scope.answer = 'true';
             });
 
             it("Should not call scope.questions.$add if there is no question defined on the scope", function () {
@@ -82,12 +83,31 @@ describe('Controller: MainCtrl', function () {
                 expect(scope.questions.$add).not.toHaveBeenCalled();
             });
 
+            it("Should not call scope.questions.$add if the answer is undefined", function () {
+                scope.answer = undefined;
+                scope.onSubmit();
+                expect(scope.questions.$add).not.toHaveBeenCalled();
+            });
+
+            it("Should call scope.questions.$add when the answer is 0 (index for question)", function () {
+                scope.answer = 1;
+                scope.selections.selectedQuestionType = 'Multiple Choice';
+                scope.selections.multipleChoiceOptions = ['Bread', 'Salami'];
+                scope.onSubmit();
+                expect(scope.questions.$add).toHaveBeenCalledWith({
+                    question: scope.question,
+                    options: scope.selections.multipleChoiceOptions,
+                    answer: scope.selections.multipleChoiceOptions[scope.answer]
+                });
+            });
+
             it("Should call scope.questions.$add if there is no question defined on the scope", function () {
                 scope.onSubmit();
-                expect(scope.questions.$add).toHaveBeenCalledWith({question: scope.question, options: [
-                    {value: true},
-                    {value: false}
-                ]});
+                expect(scope.questions.$add).toHaveBeenCalledWith({
+                    question: scope.question, options: [
+                        {value: true},
+                        {value: false}
+                    ], answer: 'true'});
             });
 
             it("Should call scope.questions.$add with multipleChoiceOptions if there is no question defined on the scope", function () {
@@ -103,7 +123,10 @@ describe('Controller: MainCtrl', function () {
             describe("category", function () {
                 beforeEach(function () {
                     scope.category = 'Philly Cheese';
-                    scope.getCategories = jasmine.createSpy('scope.getCategories').andReturn([{name: 'Cheese'}, {name: 'Toast'}]);
+                    scope.getCategories = jasmine.createSpy('scope.getCategories').andReturn([
+                        {name: 'Cheese'},
+                        {name: 'Toast'}
+                    ]);
                 });
 
                 it("Should not call Category.create with the scope.category as the name if the $scope.question, category, and uniqueForCollection returns false", function () {
@@ -131,7 +154,8 @@ describe('Controller: MainCtrl', function () {
                             {value: true},
                             {value: false}
                         ],
-                        category: scope.category
+                        category: scope.category,
+                        answer: 'true'
                     });
                 });
             });
@@ -166,17 +190,26 @@ describe('Controller: MainCtrl', function () {
             });
 
             it("Should reject any functions defined within the categories on the scope", function () {
-                scope.categories = [function () {}, {id: 89, name: 'Tacos'}];
-                expect(scope.getCategories()).toEqual([{id: 89, name: 'Tacos'}]);
+                scope.categories = [function () {
+                }, {id: 89, name: 'Tacos'}];
+                expect(scope.getCategories()).toEqual([
+                    {id: 89, name: 'Tacos'}
+                ]);
             });
 
             it("Should make primitives into objects where the val is the name key", function () {
                 scope.categories = ["Cheddar", {id: 89, name: 'Tacos'}];
-                expect(scope.getCategories()).toEqual([{name: "Cheddar"}, {id: 89, name: 'Tacos'}]);
+                expect(scope.getCategories()).toEqual([
+                    {name: "Cheddar"},
+                    {id: 89, name: 'Tacos'}
+                ]);
             });
 
             it("Should do nothing to category of object type in the list", function () {
-                scope.categories = [{id: 90}, {id: 89, name: 'Tacos'}];
+                scope.categories = [
+                    {id: 90},
+                    {id: 89, name: 'Tacos'}
+                ];
 
                 var copy = angular.copy(scope.categories);
                 expect(scope.getCategories()).toEqual(copy);
